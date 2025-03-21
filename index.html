@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelliDB Enterprise Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --info-color: #3498db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .dashboard-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .dashboard-subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-header {
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-header i {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .feature-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .feature-content {
+            padding: 20px;
+        }
+        
+        .feature-description {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .feature-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .feature-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-active {
+            background-color: var(--success-color);
+        }
+        
+        .status-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .status-inactive {
+            background-color: var(--accent-color);
+        }
+        
+        .status-text {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .audit-header { background-color: #3498db; }
+        .analyzer-header { background-color: #9b59b6; }
+        .reorg-header { background-color: #e67e22; }
+        .ha-header { background-color: #2ecc71; }
+        .migration-header { background-color: #e74c3c; }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .system-status {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .status-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .user-info {
+                margin-top: 15px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-links {
+                margin-top: 15px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-database"></i>
+                    IntelliDB Enterprise
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div>
+                        <div>Admin User</div>
+                        <div style="font-size: 12px; opacity: 0.8;">System Administrator</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="dashboard-title">Enterprise Database Management Suite</h1>
+        <p class="dashboard-subtitle">Comprehensive tools for database administration, optimization, and security</p>
+        
+        <div class="system-status">
+            <h2 class="status-title">System Status</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-dot status-active"></div>
+                    <span>Database Servers: Online</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot status-active"></div>
+                    <span>Backup Systems: Active</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot status-warning"></div>
+                    <span>Storage: 78% Used</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot status-active"></div>
+                    <span>Security: No Alerts</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="feature-grid">
+            <!-- Audit Feature Card -->
+            <div class="feature-card">
+                <div class="feature-header audit-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Database Audit</h3>
+                </div>
+                <div class="feature-content">
+                    <div class="status-indicator">
+                        <div class="status-dot status-active"></div>
+                        <span class="status-text">Active - Monitoring All Systems</span>
+                    </div>
+                    <p class="feature-description">
+                        Comprehensive database activity monitoring and auditing solution that tracks all database changes, 
+                        access patterns, and security events. Ensures compliance with regulatory requirements like GDPR, 
+                        HIPAA, and SOX.
+                    </p>
+                    <div class="feature-stats">
+                        <div class="stat">
+                            <div class="stat-value">1,243</div>
+                            <div class="stat-label">Events Today</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Security Alerts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">99.8%</div>
+                            <div class="stat-label">Compliance</div>
+                        </div>
+                    </div>
+                    <div class="feature-actions">
+                        <a href="#" class="btn btn-primary">View Audit Logs</a>
+                        <a href="#" class="btn btn-secondary">Configure</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analyzer Feature Card -->
+            <div class="feature-card">
+                <div class="feature-header analyzer-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Performance Analyzer</h3>
+                </div>
+                <div class="feature-content">
+                    <div class="status-indicator">
+                        <div class="status-dot status-active"></div>
+                        <span class="status-text">Active - Analysis in Progress</span>
+                    </div>
+                    <p class="feature-description">
+                        Advanced database performance monitoring and analysis tool that identifies bottlenecks, 
+                        slow queries, and optimization opportunities. Provides real-time insights and historical 
+                        trends to ensure optimal database performance.
+                    </p>
+                    <div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>CPU Usage</span>
+                                <span>42%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 42%; background-color: #3498db;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Memory Usage</span>
+                                <span>68%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 68%; background-color: #f39c12;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>I/O Operations</span>
+                                <span>23%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 23%; background-color: #2ecc71;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-actions" style="margin-top: 20px;">
+                        <a href="#" class="btn btn-primary">View Analysis</a>
+                        <a href="#" class="btn btn-secondary">Configure</a>
+                    </div>
+</html>
